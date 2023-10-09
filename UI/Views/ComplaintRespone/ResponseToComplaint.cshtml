@@ -1,0 +1,314 @@
+﻿@using Portal.Helper;
+@model DTO.ComplaintResponse
+@{
+    var serialNo = ViewBag.serialNo;
+    var stepId = ViewBag.stepId;
+    var complaintid = ViewBag.complaintid;
+}
+@{
+    Layout = "_Layout2";
+}
+<head>
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/plugins/dataTables/datatables.min.css" rel='stylesheet' type='text/css'>
+    <link href='~/Content/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/animate.css' rel='stylesheet' type='text/css'>
+    <link href="~/Content/style.css" rel="stylesheet" type="text/css">
+    <link href="~/Scripts/plugins/jquery-ui/jquery-ui.min.css" type="text/css" />
+    <link href='~/fonts/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/iCheck/custom.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/datapicker/datepicker3.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/clockpicker/clockpicker.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/dropzone/basic.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/dropzone/dropzone.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/jasny/jasny-bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/select2/select2.min.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/chosen/bootstrap-chosen.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/sweetalert/sweetalert.css' rel='stylesheet' type='text/css'>
+    <link href='~/Content/plugins/steps/jquery.steps.css' rel='stylesheet' type='text/css'>
+    <link href="~/content/plugins/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/content/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
+    <link href="~/content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href='~/Content/plugins/bootstrap-rtl/bootstrap-rtl.css' rel='stylesheet' type='text/css'>
+    <link href="~/Content/onoffswitch-rtl.css" rel='stylesheet' type='text/css' />
+
+</head>
+@*<style>
+    .header {
+        background-color: #293846;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+        .header h2 {
+            margin: 0;
+            font-size: 36px;
+        }
+</style>
+<div class="header">
+    <h2 style="">الرد على الشكوى</h2>
+</div>*@
+
+@using (Html.BeginForm("Save", "ComplaintRespone", FormMethod.Post))
+{
+    <div class="ibox-content">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-11">
+                    @*     @Html.Adaa_HiddenFor(e=>e.Id)*@
+                    @Html.Adaa_HiddenFor(e=>e.CreationUser)
+                    @Html.Adaa_HiddenFor(e=>e.CreationDate)
+                    @Html.Adaa_HiddenFor(e=>e.IsDeleted)
+                    @Html.Hidden("serialNo",$"{serialNo}")
+                    @Html.Hidden("stepId",$"{stepId}")
+                    @Html.Hidden("complaintid",$"{complaintid}")
+                    <span class="help-block m-b-none"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم الموظف :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("EmpName",$"{ViewBag.EmpName}",new { @class="form-control", @readonly="true"})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">الأدارة :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("EmpDept",$"{ViewBag.EmpDept}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الانشاء :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBoxFor(e => e.ResponseDate,new {@class="form-control", type = "date"})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم المشتكي :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Person",$"{ViewBag.person}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">رقم الشكوى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("ComplaintNo",$"{ViewBag.ComplaintNo}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الشكوى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("DateIn",$"{ViewBag.Date}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">هاتف :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("phone",$"{ViewBag.Phone}",new {@class="form-control", @readonly=true})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">فاكس :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Fax",$"{ViewBag.Fax}",new {@class="form-control", @readonly=true})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">خلوي :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Mobile",$"{ViewBag.Mobile}",new {@class="form-control", @readonly=true})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">طريقة تقديم الشكوى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("complaintmethod",$"{ViewBag.ComplaintMethod}",new {@class="form-control", @readonly=true})
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @* <div>
+            <span class="col-sm-2 sm-offset-1"><label class="control-label">حالة الشكوى :</label></span>
+            <span class="col-sm-3">
+            @Html.TextBoxFor(e =>e.ComplaintStatus.NameArabic, new { @class="form-control", @readonly=true})
+            </span>
+            </div>*@
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">حالة الشكوى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.DropDownListFor(e =>e.ComplaintStatusId, ViewBag.AllComplaintStatus as SelectList,"اختيار حالة الشكوى" , new { @class="form-control"})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">الديوان المعني بالتصدير :</label></span>
+                    <span class="col-sm-3">
+                        @Html.DropDownListFor(e =>e.ExportOfficeId, ViewBag.AllExportoffice as SelectList,"اختيار الديوان المعني بالتصدير" , new { @class="form-control"})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">الى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("EmpName",$"{ViewBag.EmpName}",new {@class="form-control", @readonly=true})
+
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">العنوان :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Address",$"{ViewBag.Address}",new {@class="form-control", @readonly=true})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">خلوي/هاتف/فاكس :</label></span>
+                    <span class="col-sm-4">
+                        @Html.TextBox("Mobile",$"{ViewBag.Phone}/{ViewBag.Fax}/{ViewBag.Mobile}",new {@class="form-control", @readonly=true})
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">موضوع كتاب الرد :</label></span>
+                    <span class="col-sm-8">
+                        @Html.TextBoxFor(e=>e.ReplyBookTopic,new {@class="form-control" })
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">نص الرد على الشكوى :</label></span>
+                    <span class="col-sm-8">
+                        @Html.TextAreaFor(e=>e.TextResponse,new {@class="form-control"})
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">الشخص المخول بالتوقيع :</label></span>
+                    <span class="col-sm-3">
+                        @Html.DropDownListFor(e =>e.EmployeeId,ViewBag.AllEmployee as SelectList,"اختيار الموظف المخول بالتوقيع" , new { @class="form-control"})
+                    </span>
+                </div>
+                <span>
+                    <a href="@Url.Action("Index","book")" class="btn btn-info" title="">
+                        <i class="fa fa-arrow-up"></i>
+                        &ensp; تصدير الكتاب
+                    </a>
+                </span>
+            </div>
+        </div>
+       
+        @if (ViewBag.ShowstepId != "")
+        {
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-sm-12 col-sm-offset-9  col-md-12 col-md-offset-8  col-lg-4 col-lg-offset-5">
+                        <span>
+                            <a href="@Url.Action("Index","Complaint")" class="btn btn-warning" title="اغلاق">
+                                <i class="fa fa-close"></i>
+                                &ensp; اغلاق
+                            </a>
+                        </span>
+                        <span>
+                            <button class="btn btn-primary" type="submit" title="حفظ">
+                                <i class="fa fa-save"></i>
+                                &ensp; حفظ البيانات
+                            </button>
+                        </span>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#liMainPage').removeClass('active');
+            $('#liComplaintResponse').addClass('active');
+            $('#liAudit').removeClass('active');
+            $('#liTechReport').removeClass('active');
+        });
+    </script>
+
+}

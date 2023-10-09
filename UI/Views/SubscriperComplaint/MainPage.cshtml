@@ -1,0 +1,746 @@
+﻿@using Portal.Helper;
+@model DTO.Complaint
+@{
+    SelectList complaintId = ViewBag.ComplainType1;
+
+}
+@if (Model.Id != 0)
+{
+    Layout = "_Layout2";
+
+    <head>
+        <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" type="text/css">
+        <link href="~/Content/plugins/dataTables/datatables.min.css" rel='stylesheet' type='text/css'>
+        <link href='~/Content/bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/animate.css' rel='stylesheet' type='text/css'>
+        <link href="~/Content/style.css" rel="stylesheet" type="text/css">
+        <link href="~/Scripts/plugins/jquery-ui/jquery-ui.min.css" type="text/css" />
+        <link href='~/fonts/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/iCheck/custom.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/datapicker/datepicker3.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/clockpicker/clockpicker.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/dropzone/basic.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/dropzone/dropzone.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/jasny/jasny-bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/select2/select2.min.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/chosen/bootstrap-chosen.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/sweetalert/sweetalert.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/steps/jquery.steps.css' rel='stylesheet' type='text/css'>
+        <link href="~/content/plugins/summernote/summernote.css" rel="stylesheet" />
+        <link href="~/content/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
+        <link href="~/content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+        <link href='~/Content/plugins/bootstrap-rtl/bootstrap-rtl.css' rel='stylesheet' type='text/css'>
+        <link href="~/Content/onoffswitch-rtl.css" rel='stylesheet' type='text/css' />
+
+    </head>
+}
+<style>
+    .header {
+        background-color: #293846;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .header h2 {
+            margin: 0;
+            font-size: 36px;
+    }
+
+</style>
+
+@if (Model.Id == 0)
+    {
+       <div class="header">
+    
+        <h2 style="">انشاء شكوى</h2>
+    
+ 
+       </div>
+    }
+@using (Html.BeginForm("Save", "SubscriperComplaint", FormMethod.Post))
+
+{
+    <div class="ibox-content">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-11">
+                    @Html.Adaa_HiddenFor(e=>e.Id)
+                    @Html.Adaa_HiddenFor(e=>e.CreationUser)
+                    @Html.Adaa_HiddenFor(e=>e.CreationDate)
+                    @Html.Adaa_HiddenFor(e=>e.IsDeleted)
+                    @Html.Adaa_HiddenFor(e=>e.RequestId)
+                    @if (Model.Id != 0)
+                    {
+                        @Html.Adaa_HiddenFor(e=>e.SubscriberId)
+                        @Html.Adaa_HiddenFor(e=>e.ComplaintSourceId)
+                        @Html.Adaa_HiddenFor(e=>e.ComplaintTypeId)
+                    }
+                    <span class="help-block m-b-none"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row" style="padding-right:10px;padding-top:5px;background:#f3f3f4;">
+                <h3>معلومات الموظف</h3>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم الموظف :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("EmpName",$"{ViewBag.EmpName}",new { @class="form-control", @readonly="true"})
+
+
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">الأدارة :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("EmpDept",$"{ViewBag.EmpDept}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الانشاء :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("DateIn",$"{DateOnly.FromDateTime(DateTime.Now)}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">المكتب المعني بالشكوى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Branch",$"{ViewBag.EmpBranch}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e=>e.CreationDate,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">طريقة تقديم الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e=>e.ComplaintMethodId,ViewBag.ComplaintMethod as SelectList, new { @class="form-control", @disabled = "disabled"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e=>e.MalfunctionDate,$"{DateOnly.FromDateTime(DateTime.Now)}",new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">طريقة تقديم الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e=>e.ComplaintMethodId,ViewBag.ComplaintMethod as SelectList,"الرجاء اختيار طريقة التقديم" ,new { @class="form-control"})
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">رقم الشكوى :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBoxFor(e=>e.ComplaintNo,new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">الشكوى مقدمة من قبل :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e=>e.ComplainingpartiesId,ViewBag.complaintParties as SelectList, new { @class="form-control", @disabled = "disabled"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">الشكوى مقدمة من قبل :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e=>e.ComplainingpartiesId,ViewBag.complaintParties as SelectList,"الرجاء اختيار الجهة المقدمة للشكوى", new { @class="form-control"})
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row" style="padding-right:10px;padding-top:5px;background:#f3f3f4;">
+                <h3>معلومات المشترك</h3>
+            </div>
+        </div>
+        <div id="parties" style="display:none">
+            <div class="form-group">
+                <div class="row">
+
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">جهة الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.OfficialComplainingPartiesId,new {@class="form-control"})
+                        </span>
+                    </div>
+
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">رقم الكتاب الوارد :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.ComplaintBookNumber,new {@class="form-control"})
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الكتاب الوارد :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.ComplaintBookDate,new {@class="form-control"})
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">هاتف :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBoxFor(e => e.Phone,new {@class="form-control"})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">فاكس :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBoxFor(e => e.Fax,new {@class="form-control"})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">خلوي :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBoxFor(e => e.Mobile,new {@class="form-control"})
+                    </span>
+                </div>
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">البلدة :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.AreaId, ViewBag.AllArea as SelectList , new { @class="form-control",@disabled = "disabled"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">البلدة :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.AreaId, ViewBag.AllArea as SelectList,"الرجاء اختيار البلدة" , new { @class="form-control"})
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">صاحب الاشتراك :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBox("SubId",$"{ViewBag.SubscriberName}",new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">الرقم الوطني :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.NationalNumber,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">صاحب الاشتراك :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.SubscriberId, ViewBag.Allsubscriber as SelectList,"الرجاء اختيار اسم المشترك" , new { @class="form-control"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">الرقم الوطني :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.NationalNumber,new {@class="form-control"})
+                        </span>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">نوع الاشتراك :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("subType",$"{ViewBag.SubType}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+
+                @*
+            <div>
+            <span class="col-sm-2 sm-offset-1"><label class="control-label">نوع الاشتراك :</label></span>
+            <span class="col-sm-3">
+            @Html.TextBox("subType",$"{ViewBag.SubType}",new {@class="form-control", @readonly="true"})
+            </span>
+            </div>*@
+
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">الرقم الحديدي :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.IronNumber,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">الرقم الحديدي :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.IronNumber,new {@class="form-control"})
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم المشتكي :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.CallerName,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">البريد الالكتروني :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e =>e.Email,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم المشتكي :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.CallerName,new {@class="form-control"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">البريد الالكتروني :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e =>e.Email,new {@class="form-control"})
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم المتصل :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.CallerName,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">العنوان :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.Address,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم المتصل :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.CallerName,new {@class="form-control"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">العنوان :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.Address,new {@class="form-control"})
+                        </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row" style="padding-right:10px;padding-top:5px;background:#f3f3f4;">
+                <h3>معلومات الشكوى</h3>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">نوع الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintSourceId,ViewBag.AllComplaintCategory as SelectList,$"{ViewBag.complaintCategory}", new { @class="form-control", @disabled = "disabled"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">صنف الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintTypeId,ViewBag.AllComplaintType as SelectList ,$"{ViewBag.complaintType}", new { @class="form-control" , @disabled = "disabled"})
+                        </span>
+                    </div>
+                   
+                }
+                else
+                {
+                   
+                    
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">نوع الشكوى :</label></span>
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintSourceId,ViewBag.AllComplaintCategory as SelectList,"الرجاء اختيار تصنيف الشكوى" ,new { @class="form-control"})
+                        </span>
+                    </div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">صنف الشكوى :</label></span>
+                    @*<div id="Type0" style="">
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.ComplaintTypeId,"" , new { @class="form-control" , @readonly="true" })
+                        </span>
+                    </div>*@
+                    <div id="Type1" style="">
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintTypeId,ViewBag.ComplainType1 as SelectList,"الرجاء اختيار نوع الشكوى" , new { @class="form-control" })
+                        </span>
+                    </div>
+                    <div id="Type2" style="display:none">
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintTypeId,ViewBag.ComplainType2 as SelectList,"الرجاء اختيار نوع الشكوى" , new { @class="form-control" })
+                        </span>
+                    </div>
+                    <div id="Type3" style="display:none">
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintTypeId,ViewBag.ComplainType3 as SelectList,"الرجاء اختيار نوع الشكوى" , new { @class="form-control" })
+                        </span>
+                    </div>
+                    <div id="Type4" style="display:none">
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintTypeId,ViewBag.ComplainType4 as SelectList,"الرجاء اختيار نوع الشكوى" , new { @class="form-control" })
+                        </span>
+                    </div>
+                    <div id="Type5" style="display:none">
+                        <span class="col-sm-3">
+                            @Html.DropDownListFor(e => e.ComplaintTypeId,ViewBag.ComplainType5 as SelectList,"الرجاء اختيار نوع الشكوى" , new { @class="form-control" })
+                        </span>
+                    </div>
+
+                   
+                }
+
+
+            </div>
+        </div>
+
+       
+        <div class="form-group">
+            <div class="row">
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">الجهة المحول لها :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Branch",$"{ViewBag.EmpDept}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+                <div>
+                    <span class="col-sm-2 sm-offset-1"><label class="control-label">اسم الموظف :</label></span>
+                    <span class="col-sm-3">
+                        @Html.TextBox("Branch",$"{ViewBag.EmpName}",new {@class="form-control", @readonly="true"})
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">القيمة المقدرة :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.EstimatedValue,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ العطل :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e=>e.MalfunctionDate,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">القيمة المقدرة :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e => e.EstimatedValue,new {@class="form-control"})
+                        </span>
+                    </div>
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ العطل :</label></span>
+                        <span class="col-sm-3">
+                            @Html.TextBoxFor(e=>e.MalfunctionDate,new {@class="form-control", @type="Date"})
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @if (Model.Id != 0)
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">وصف مختصر للشكوى :</label></span>
+                        <span class="col-sm-9">
+                            @Html.TextAreaFor(e=>e.ComplaintDetails,new {@class="form-control", @readonly="true"})
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <span class="col-sm-2 sm-offset-1"><label class="control-label">وصف مختصر للشكوى :</label></span>
+                        <span class="col-sm-9">
+                            @Html.TextAreaFor(e=>e.ComplaintDetails,new {@class="form-control"})
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+        @if (Model.Id != 0)
+        {
+            <div class="form-group" style="padding:10px; border-style:double; background:aliceblue">
+                <div class="row" style="text-align:center; margin:15px"> 
+                    <h3>
+                    حسب كود معايير الاداء الصادر عن هيئة تنظيم قطاع الطاقة والمعادن يتعين على الموزع ان يرد على كل شكوى يتلقاها من المستهلك خلال(20) يوم عمل فيما يتعلق بشكاوي جودة الطاقة و (15) يوم عمل فيما يتعلق بباقي الشكاوي من تاريخ استقبالها.
+                    يعرف يوم العمل  : يعني اي يوم غير ايام الجمعة والسبت وغير العطل الرسمية في الاردن ,وذلك في ايام عمل البنوك في الاردن
+                        </h3>
+                </div>
+                <div class="form-group" style="width:80%;margin-right:10%;">
+                    <div class="row" style="text-align:center">
+                        <h3>معلومات الرد</h3>
+                    </div>
+                </div>
+                <div class="form-group" style="width:80%;margin-right:10%;">
+                    <div class="row">
+                        <div>
+                            <span class="col-sm-2 sm-offset-1"><label class="control-label">الوقت المتبقي للرد :</label></span>
+                            <span class="col-sm-3">
+                                @Html.TextBox("TimetoRes",$"{ViewBag.Difference} يوم",new {@class="form-control", @readonly="true"})
+                            </span>
+                        </div>
+                        <div>
+                            <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ الرد :</label></span>
+                            <span class="col-sm-3">
+                                @Html.TextBox("responseDate","",new {@class="form-control", @readonly="true"})
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="width:80%;margin-right:10%;">
+                    <div class="row">
+                        <div>
+                            <span class="col-sm-2 sm-offset-1"><label class="control-label">رقم كتاب الرد :</label></span>
+                            <span class="col-sm-3">
+                                @Html.TextBox("bookNo","",new {@class="form-control", @readonly="true"})
+                            </span>
+                        </div>
+                        <div>
+                            <span class="col-sm-2 sm-offset-1"><label class="control-label">تاريخ التصدير :</label></span>
+                            <span class="col-sm-3">
+                                @Html.TextBox("bookDate","",new {@class="form-control", @readonly="true"})
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-sm-12 col-sm-offset-9  col-md-12 col-md-offset-8  col-lg-4 col-lg-offset-5">
+                    <span>
+                        <a href="@Url.Action("Index","Complaint")" class="btn btn-warning" title="اغلاق">
+                            <i class="fa fa-close"></i>
+                            &ensp; اغلاق        
+                        </a>
+                    </span>
+                    <span>
+                        <button class="btn btn-primary" type="submit" title="حفظ">
+                            <i class="fa fa-save"></i>
+                            &ensp; حفظ البيانات
+                        </button>
+                    </span>
+                </div>
+                <br />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+
+
+
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#liMainPage').addClass('active');
+        $('#liComplaintResponse').removeClass('active');
+        $('#liAudit').removeClass('active');
+        $('#liTechReport').removeClass('active');
+
+        $('#ComplaintSourceId').on('change', function () {
+            var SubProductID = $('#ComplaintSourceId').find(":selected").val();    
+            if (SubProductID == 1) {
+                $("#Type1").css("display", "block");
+                $("#Type2").css("display", "none");
+                $("#Type0").css("display", "none");
+                $("#Type3").css("display", "none");
+                $("#Type4").css("display", "none");
+                $("#Type5").css("display", "none");
+              
+                   
+                   //complaintId = ViewBag.ComplainType1;
+                   
+                
+            }
+            else if (SubProductID == 2) {
+                $("#Type2").css("display", "block");
+                $("#Type1").css("display", "none");
+                $("#Type0").css("display", "none");
+                $("#Type3").css("display", "none");
+                $("#Type4").css("display", "none");
+                $("#Type5").css("display", "none");
+    
+                //complaintId = ViewBag.ComplainType2;
+    
+            }
+            else if (SubProductID == 3) {
+                $("#Type3").css("display", "block");
+                $("#Type1").css("display", "none");
+                $("#Type0").css("display", "none");
+                $("#Type2").css("display", "none");
+                $("#Type4").css("display", "none");
+                $("#Type5").css("display", "none");
+                
+                   
+                   //complaintId = ViewBag.ComplainType3;
+                   
+                
+            }
+            else if (SubProductID == 4) {
+                $("#Type4").css("display", "block");
+                $("#Type1").css("display", "none");
+                $("#Type0").css("display", "none");
+                $("#Type3").css("display", "none");
+                $("#Type2").css("display", "none");
+                $("#Type5").css("display", "none");
+    
+                  //complaintId = ViewBag.ComplainType4;
+    
+            }
+            else {
+                $("#Type5").css("display", "block");
+                $("#Type1").css("display", "none");
+                $("#Type3").css("display", "none");
+                $("#Type0").css("display", "none");
+                $("#Type4").css("display", "none");
+                $("#Type2").css("display", "none");
+  
+                 /*complaintId = ViewBag.ComplainType5;*/
+   
+            }
+        });
+
+        $('#ComplainingpartiesId').on('change', function () {
+            var ComplainingpartiesId = $('#ComplainingpartiesId').find(":selected").val();
+            if (ComplainingpartiesId == 8){
+                $("#parties").css("display", "block");
+            }
+            else{
+                $("#parties").css("display", "none");
+            }
+        });
+    });
+</script>

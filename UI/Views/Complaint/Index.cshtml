@@ -1,0 +1,92 @@
+﻿@model IEnumerable<DTO.Complaint>
+@{
+    List<DTO.Lookup> complaintStatue = ViewBag.complaintStatue;
+}
+<style>
+    .header {
+        background-color: #293846;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+        .header h2 {
+            margin: 0;
+            font-size: 36px;
+        }
+</style>
+<div class="container">
+<div class="header">
+    <h2 style="">الشكاوي</h2>
+</div>
+
+<div style="padding:15px; float:left">
+    <a class="btn btn-success" href="@Url.Action("MainPage","SubscriperComplaint",new{ID=0})">
+        <span class="fa fa-plus">&nbsp;&nbsp;إضافة شكوى جديدة</span>
+    </a>
+</div>
+<table class="table table-striped table-bordered table-hover dataTables-example">
+
+    <thead>
+        <tr>
+            <th style="text-align:center">الرقم</th>
+            <th style="text-align:center">أسم المعاملة</th>
+            <th style="text-align:center">حالة الشكوى</th>
+            <th style="text-align:center">تاريخ البدء</th>
+            @*<th style="text-align:center">@Html.DisplayNameFor(mode =>mode.IsRTL)</th>*@
+            <th style="text-align:center" class="class=" col-sm-4 col-sm-offset-1 col-md-6 col-md-offset-1 col-lg-2 col-lg-offset-1"> <span>التفاصيل</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Complaint in Model)
+        {
+
+            <tr id="tr_@Complaint.Id" class="gradeX">
+                <td style="text-align:center">@Html.DisplayFor(e=>Complaint.Id)</td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(e=>Complaint.IronNumber)
+                </td>
+                @if (complaintStatue.FirstOrDefault(e => e.Id == Convert.ToInt32(Complaint.ComplaintStatusId)) != null)
+                {
+                    <td style="text-align:center">
+                        @complaintStatue.FirstOrDefault(e => e.Id == Complaint.ComplaintStatusId).NameArabic
+                    </td>
+                }
+                else
+                {
+                    <td style="text-align:center">
+                        لا يوجد حالة للشكوى بعد
+                    </td>
+                }
+                <td style="text-align:center">
+                    @Html.DisplayFor(e=>Complaint.CreationDate)
+                </td>
+                @*                <td style="text-align:center">@Html.DisplayFor(e=>Language.IsRTL)</td>*@
+
+                <td style="text-align:center" class="col-sm-4 col-sm-offset-1 col-md-6 col-md-offset-1 col-lg-2 col-lg-offset-1">
+                    <a style="text-decoration:underline" href="@Url.Action("MainPage","SubscriperComplaint",new{id=@Complaint.Id})" >عرض التفاصيل</a>
+
+
+                    @*<a data-toggle="modal" href="#modal-form" class="btn btn-warning btn-circle  btn-outline" data-url="@Url.Action("AddEdit","Language",new {ID=Language.ID})"><i class="fa fa-edit"></i></a>
+                *@
+                    @*<a class="btn btn-danger btn-circle  btn-outline" onclick="javascript:Delete('@Url.Action("Delete","Language")',@Language.ID)"> <i class="fa fa-trash"></i></a>*@
+                </td>
+            </tr>
+
+
+
+
+
+        }
+    </tbody>
+
+    </table>
+    <div class="form-group">
+        <div class="row">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+        </div>
+    </div>
+</div>

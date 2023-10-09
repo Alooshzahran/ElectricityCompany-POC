@@ -1,0 +1,245 @@
+﻿@using Portal.Helper;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Irbid Electricity | @ViewBag.Title</title>
+
+    <ink href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" rel="stylesheet" type="text/css">
+        <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" type="text/css">
+        <link href="~/Content/plugins/dataTables/datatables.min.css" rel='stylesheet' type='text/css'>
+        <link href='~/Content/bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/animate.css' rel='stylesheet' type='text/css'>
+        <link href="~/Content/style.css" rel="stylesheet" type="text/css">
+        <link href="~/Scripts/plugins/jquery-ui/jquery-ui.min.css" type="text/css" />
+        <link href='~/fonts/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/iCheck/custom.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/datapicker/datepicker3.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/clockpicker/clockpicker.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/dropzone/basic.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/dropzone/dropzone.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/jasny/jasny-bootstrap.min.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/select2/select2.min.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/chosen/bootstrap-chosen.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/sweetalert/sweetalert.css' rel='stylesheet' type='text/css'>
+        <link href='~/Content/plugins/steps/jquery.steps.css' rel='stylesheet' type='text/css'>
+        <link href="~/content/plugins/summernote/summernote.css" rel="stylesheet" />
+        <link href="~/content/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
+        <link href="~/content/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+                @*        <link href="~/Content/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+        <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />*@
+
+
+
+
+
+        <!-- Add jQuery Style direct - used for jQGrid plugin -->
+
+        <link href='~/Content/plugins/bootstrap-rtl/bootstrap-rtl.css' rel='stylesheet' type='text/css'>
+        <link href="~/Content/onoffswitch-rtl.css" rel='stylesheet' type='text/css' />
+        <style>
+            .pagination {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .chosen-container-multi .chosen-choices li {
+                float: right !important;
+                font-weight: bold !important;
+            }
+
+            .right {
+                left: 0;
+                right: auto;
+            }
+        </style>
+
+                @*<style>
+        .right {
+        right: 0;
+        left: auto;
+        }
+
+        .onoffswitch-inner:before {
+        content: "yes";
+        }
+
+        .onoffswitch-inner:after {
+        content: "no";
+        }
+
+
+
+        .popover.top {
+        z-index: 2050;
+        }
+        </style>
+        *@
+        <style>
+            .onoffswitch-inner:before {
+                content: "yes";
+            }
+
+            .onoffswitch-inner:after {
+                content: "no";
+            }
+
+            .page-heading {
+                padding: 20px 10px !important;
+            }
+        </style>
+
+
+</head>
+<body class="rtls">
+
+    <!-- Skin configuration box -->
+    @Html.Partial("_SkinConfig")
+
+    <!-- Wrapper-->
+    <!-- PageClass give you ability to specify custom style for specific view based on action -->
+    <div id="wrapper" class="@Html.PageClass()">
+
+        <!-- Navigation -->
+        @Html.Partial("_Navigation")
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
+
+            <div class="navbar-wrapper">
+                <nav class="navbar navbar-default" role="navigation" style="background: #2f4050;font-size: 16px;">
+                    <div class="container">
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li id="liMainPage" class="active"><a class="page-scroll" style="color:white" href="@Url.Action("MainPage", "SubscriperComplaint")">الرئيسية</a></li>
+                                <li id="liComplaintResponse" class=""><a class="page-scroll" style="color:white" href="@Url.Action("ResponseToComplaint", "ComplaintRespone")">الرد على الشكوى</a></li>
+                                <li id="liAudit" class=""><a class="page-scroll" style="color:white" href="@Url.Action("Index", "Audit")">تدقيق الشكوى</a></li>
+                                <li id="liTechReport" class=""><a class="page-scroll" style="color:white" href="@Url.Action("Index", "TechnicalReport")">التقرير الفني</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Main view  -->
+            @RenderBody()
+
+            <!-- Footer -->
+            @Html.Partial("_Footer")
+
+        </div>
+        <!-- End page wrapper-->
+        <!-- Right Sidebar -->
+        @Html.Partial("_RightSidebar")
+
+    </div>
+
+
+
+
+
+
+
+</body>
+</html>
+
+<script type="text/javascript" src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+
+
+<script type="text/javascript" src="~/Scripts/plugins/peity/jquery.peity.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/dataTables/datatables.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/jeditable/jquery.jeditable.js"></script>
+
+
+
+<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<script type="text/javascript" src="~/Scripts/plugins/metisMenu/metisMenu.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/pace/pace.min.js"></script>
+<script type="text/javascript" src="~/Scripts/app/inspinia.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/clockpicker/clockpicker.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/summernote/summernote.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/pwstrength/pwstrength-bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/pwstrength/zxcvbn.js"></script>
+<script type="text/javascript" src="~/js/DeleteControl.js"></script>
+<script type="text/javascript" src="~/js/Images.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/dropzone/dropzone.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/select2/select2.full.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/steps/jquery.steps.min.js"></script>
+<script type="text/javascript" src="~/Scripts/plugins/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="~/js/refresh.js"></script>
+<script type="text/javascript" src="~/js/initializeComponents.js"></script>
+<script type="text/javascript" src="~/js/Department.js"></script>
+<script type="text/javascript" src="~/js/AnnouncementAttachment.js"></script>
+@*     <script type="text/javascript" src="~/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+*@@*     <script type="text/javascript" src="~/Scripts/plugins/fullcalendar/moment.min.js"></script>
+*@@*     <script type="text/javascript" src="~/Scripts/plugins/fullcalendar/fullcalendar.min.js"></script>
+     <script type="text/javascript" src="~/Scripts/plugins/iCheck/icheck.min.js"></script>*@
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.dataTables-example').DataTable({
+            pageLength: 25,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+
+
+
+
+        initializeComponents();
+
+
+
+
+    });
+
+
+</script>
+
+
+
+
